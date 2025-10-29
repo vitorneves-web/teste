@@ -12,7 +12,8 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "mercadopago": "^2.9.0"
+    "mercadopago": "^2.9.0",
+    "nodemailer": "^7.0.10"
   },
   "author": "Seu Nome",
   "license": "MIT"

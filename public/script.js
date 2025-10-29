@@ -72,11 +72,9 @@ document.addEventListener("DOMContentLoaded", () => {
           <a href="${ticketUrl}" target="_blank">Abrir no site do Mercado Pago</a>
         `;
 
-        // 💡 NOVO: mostrar a seção de pagamentos (.pixBox)
+        // Mostrar seção de pagamentos (.pixBox)
         const pixSection = document.querySelector("section.pixBox");
-        if (pixSection) {
-          pixSection.classList.add("mostrar");
-        }
+        if (pixSection) pixSection.classList.add("mostrar");
 
         // Botão de copiar código
         document.getElementById("copy-btn").addEventListener("click", () => {
@@ -85,6 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
           document.execCommand("copy");
           alert("Código Pix copiado!");
         });
+
       } else {
         result.innerHTML = "<p>Erro: não foi possível gerar o QR Code Pix.</p>";
         console.log("Resposta completa:", data);
