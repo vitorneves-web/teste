@@ -1,0 +1,269 @@
+@charset "UTF-8";
+
+/* Estilo Geral */
+
+:root {
+    --corBranca: #ffffff;
+    --corVermelha: #7C1818;
+    --corCinza: #C0C0C1;
+    --corCinzaClaro: #303030;
+    --corCinzaMedio: #212121;
+    --corCinzaEscuro: #181818;
+
+    --fonte-padrao: 'Roboto', sans-serif;
+    --fonte-destaque: 'Poppins', sans-serif;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--corCinzaMedio);
+    font-family: var(--fonte-padrao);
+    color: var(--corBranca);
+    height: 100vh;
+}
+
+h1, h2, h3 {
+    font-family: var(--fonte-destaque);
+    color: var(--corVermelha);
+    font-size: 2.2rem;
+}
+
+.interface {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Estilo do Cabeçalho */
+
+header {
+  padding: 12px 4%;
+  background-color: var(--corCinzaEscuro);
+}
+
+header > .interface {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header .logo img {
+  max-width: 70px;
+  border-radius: 50%;
+}
+
+header a {
+  color: var(--corCinza);
+  text-decoration: none;
+  display: inline-block;
+  transition: 0.5s;
+  font-family: var(--fonte-destaque);
+}
+
+header a:hover {
+  color: var(--corBranca);
+  transform: scale(1.05);
+}
+
+header nav ul {
+  list-style-type: none;
+}
+
+header nav ul li {
+  display: inline-block;
+  padding: 0 40px;
+}
+
+header .btn-contato button {
+  padding: 10px 40px;
+  font-size: 18px;
+  font-weight: 600;
+  background-color: var(--corVermelha);
+  border: 0;
+  border-radius: 30px;
+  cursor: pointer;
+  color: var(--corBranca);
+}
+
+header .btn-contato button:hover {
+  box-shadow: 0px 0px 8px #7c1818;
+}
+
+/* Estilo do Inscrições */
+
+section.inscricoes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 40px 20px;
+    /* padding-top: 144px; */
+}
+
+section.inscricoes h1 {
+    padding-bottom: 20px;
+    font-size: 2.2rem;
+}
+
+/* Container */
+.inscricoes .interface {
+  width: 100%;
+  max-width: 500px;
+  background-color: var(--corCinzaClaro);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* FORMULÁRIO */
+#form-checkout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* espaço entre os campos */
+}
+
+/* BLOCO DE CADA CAMPO */
+#form-checkout label {
+  display: block;
+  font-weight: 600;
+  color: var(--corCinza);
+  margin-bottom: 6px;
+}
+
+#form-checkout input,
+#form-checkout select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: var(--corBranca);
+  color: var(--corCinzaEscuro);
+  font-size: 16px;
+  transition: border 0.2s;
+}
+
+/* ANIMAÇÃO QUANDO CLICA NO CAMPO */
+#form-checkout input:focus,
+#form-checkout select:focus {
+  border-color: var(--corLaranja);
+  outline: none;
+}
+
+#form-checkout button {
+  margin-top: 15px;
+  padding: 10px 40px;
+  font-size: 18px;
+  font-weight: 600;
+  background-color: var(--corVermelha);
+  border: 0;
+  border-radius: 30px;
+  cursor: pointer;
+  color: var(--corBranca);
+}
+
+#form-checkout button:hover {
+  box-shadow: 0px 0px 8px #7c1818;
+}
+/* Estilo dos Pagamentos */
+
+section.pixBox {
+  display: none; /* começa escondido */
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* ✅ quando o JS ativar, volta a ser flex */
+section.pixBox.mostrar {
+  display: flex;
+}
+
+.container {
+    margin: 18px auto;
+    max-width: 500px;
+    width: 100%;
+    background: var(--corCinzaClaro);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px 0px #202020;
+}
+
+section.pixBox h3 {
+    padding-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+#result img {
+  margin: 15px 0;
+  border: 2px solid #eee;
+  border-radius: 10px;
+}
+
+#result p {
+  margin-bottom: 15px;
+}
+
+#result button {
+  margin-top: 15px;
+  padding: 10px 40px;
+  font-size: 18px;
+  font-weight: 600;
+  background-color: var(--corVermelha);
+  border: 0;
+  border-radius: 30px;
+  cursor: pointer;
+  color: var(--corBranca);
+}
+
+#result button:hover {
+  box-shadow: 0px 0px 8px #7c1818;
+}
+
+#result a {
+  color: var(--corCinza);
+  text-decoration: none;
+  display: inline-block;
+  transition: 0.5s;
+  font-family: var(--fonte-destaque);
+}
+
+#pix-code {
+  margin-top: 10px;
+}
+
+#pixBox {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#pixBox img {
+    max-width: 200px;
+    max-height: 200px;
+    margin-bottom: 10px;
+}
+
+/* .text-box {
+    color: var(--corCinzaEscuro);
+    background-color: var(--corBranca);
+    margin: 15px auto 15px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    overflow-wrap: break-word;
+} */
+
+#copiarPixBtn {
+    background-color: var(--corCinzaMedio);
+    padding: 12px;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .5s;
+    color: var(--corBranca);
+    border: 2px solid var(--corCinzaClaro);
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corredores do Jordão</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <section class="interface">
+
+      <div class="logo">
+        <a href="#">
+          <img src="imagens/corredoresdojordao-logo.jpg" alt="Logo de Corredores do Jordão">
+        </a>
+      </div> <!--logo-->
+
+      <nav class="menu-desktop">
+        <ul>
+          <li><a href="#">Inscrições</a></li>
+          <li><a href="#">Sobre nós</a></li>
+          <li><a href="#">Calendário 2025</a></li>
+        </ul>
+      </nav> <!--menu-desktop-->
+
+      <div class="btn-contato">
+        <a href="#">
+          <button>Contato</button>
+        </a>
+      </div> <!--btn-contato-->
+
+    </section> <!--interface-->
+  </header>
+  <main>
+    <section class="inscricoes" id="inscricoes">
+  <h1>Inscrições - 3° Treinão</h1>
+  <div class="interface">
+    <form id="form-checkout" action="/process_payment" method="post">
+
+      <div class="campo">
+        <label for="payerFirstName">Nome:</label>
+        <input id="form-checkout__payerFirstName" name="payerFirstName" type="text" required />
+      </div>
+
+      <div class="campo">
+        <label for="payerLastName">Sobrenome:</label>
+        <input id="form-checkout__payerLastName" name="payerLastName" type="text" required />
+      </div>
+
+      <div class="campo">
+        <label for="email">E-mail:</label>
+        <input id="form-checkout__email" name="email" type="email" required />
+      </div>
+
+      <div class="campo">
+        <label for="identificationType">Tipo de documento:</label>
+        <select id="form-checkout__identificationType" name="identificationType" required></select>
+      </div>
+
+      <div class="campo">
+        <label for="identificationNumber">Número do documento:</label>
+        <input id="form-checkout__identificationNumber" name="identificationNumber" type="text" required />
+      </div>
+
+      <!-- valores fixos -->
+      <input type="hidden" name="transactionAmount" id="transactionAmount" value="12.99" />
+      <input type="hidden" name="description" id="description" value="Inscrição - Grupo de Corredores" />
+
+      <button type="submit">Gerar Pagamento</button>
+    </form>
+  </div>
+  </section>
+  <section class="pixBox" id="pixBox">
+    <div class="container">
+      <div id="result"></div>
+    </div>
+  </section>
+
+  </main>
+
+
+  <!-- SDK Mercado Pago -->
+  <script src="https://sdk.mercadopago.com/js/v2"></script>
+  <script src="script.js"></script>
+</body>
+</html>
