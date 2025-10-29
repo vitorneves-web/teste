@@ -12,10 +12,10 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static("public")); // serve os arquivos HTML/JS
 
+// Configuração do Mercado Pago (NÃO ALTERAR)
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
 });
-
 const payment = new Payment(client);
 
 // Endpoint que cria o pagamento PIX
@@ -46,6 +46,8 @@ app.post("/process_payment", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("Servidor rodando em http://localhost:3000");
+// ✅ ALTERAÇÃO IMPORTANTE: usar PORT dinâmica (Render precisa disso)
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });

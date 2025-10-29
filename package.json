@@ -1,4 +1,11 @@
 {
+  "name": "teste",
+  "version": "1.0.0",
+  "description": "Projeto de integração com Mercado Pago via PIX",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "@mercadopago/sdk-js": "^0.0.3",
     "body-parser": "^2.2.0",
@@ -6,5 +13,7 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "mercadopago": "^2.9.0"
-  }
+  },
+  "author": "Seu Nome",
+  "license": "MIT"
 }
