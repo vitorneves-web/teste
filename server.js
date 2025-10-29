@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const { MercadoPagoConfig, Payment } = require("mercadopago");
 const crypto = require("crypto");
-const fetch = require("node-fetch"); // para enviar à planilha
+const fetch = require("node-fetch");
 
 const app = express();
 app.use(cors());
@@ -49,6 +49,23 @@ app.post("/process_payment", async (req, res) => {
   }
 });
 
+// 🔹 Função para tentar obter o pagamento com retry
+async function getPaymentWithRetry(paymentId, retries = 5, delay = 3000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const resp = await payment.get({ payment_id: paymentId });
+      return resp.body || resp;
+    } catch (err) {
+      if (err.message.includes("resource not found") && i < retries - 1) {
+        console.log(`ℹ️ Pagamento ainda não disponível. Tentativa ${i + 1}/${retries} — aguardando ${delay/1000}s...`);
+        await new Promise(r => setTimeout(r, delay));
+      } else {
+        throw err;
+      }
+    }
+  }
+}
+
 // ✅ Webhook do Mercado Pago
 app.post("/webhook", express.json(), async (req, res) => {
   try {
@@ -58,17 +75,13 @@ app.post("/webhook", express.json(), async (req, res) => {
     const paymentId = req.body.data?.id || req.body.resource?.id || req.body.id;
     if (!paymentId) return res.status(200).send("No payment id");
 
+    // Tenta obter o pagamento com retry
     let paymentInfo;
     try {
-      const mpResp = await payment.get({ payment_id: paymentId });
-      paymentInfo = mpResp.body || mpResp;
+      paymentInfo = await getPaymentWithRetry(paymentId);
     } catch (err) {
-      if (err.message.includes("resource not found")) {
-        console.log("ℹ️ Pagamento ainda não disponível. Ignorando webhook temporariamente.");
-        return res.status(200).send("Pagamento não disponível ainda");
-      } else {
-        throw err;
-      }
+      console.error("❌ Não foi possível obter o pagamento após retries:", err);
+      return res.status(200).send("Pagamento ainda não disponível");
     }
 
     console.log("💰 Pagamento consultado:", paymentInfo.id, paymentInfo.status);
