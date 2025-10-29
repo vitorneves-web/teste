@@ -14,9 +14,10 @@ app.use(express.static("public"));
 // ✅ URL do seu Web App do Google Apps Script
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxwSwmexJtO3PAdMDEjvNf-_JcrpAS3LjuIa2ISig7JxS1G3mSJRljXVrfXPUAyt7FLoA/exec";
 
-// Configuração do Mercado Pago (NÃO ALTERAR)
+// ✅ Configuração do Mercado Pago
+const ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESS_TOKEN;
 const client = new MercadoPagoConfig({
-  accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
+  accessToken: ACCESS_TOKEN,
 });
 const payment = new Payment(client);
 
@@ -37,7 +38,7 @@ app.post("/process_payment", async (req, res) => {
             number: req.body.identificationNumber,
           },
         },
-        external_reference: crypto.randomUUID(), // ID local único
+        external_reference: crypto.randomUUID(),
       },
       requestOptions: { idempotencyKey: crypto.randomUUID() },
     });
@@ -49,21 +50,32 @@ app.post("/process_payment", async (req, res) => {
   }
 });
 
-// 🔹 Função para tentar obter o pagamento com retry
-async function getPaymentWithRetry(paymentId, retries = 5, delay = 3000) {
+// 🔹 Função para tentar obter o pagamento diretamente na API REST (garantia total)
+async function getPaymentDirect(paymentId, retries = 6, delay = 4000) {
   for (let i = 0; i < retries; i++) {
-    try {
-      const resp = await payment.get({ payment_id: paymentId });
-      return resp.body || resp;
-    } catch (err) {
-      if (err.message.includes("resource not found") && i < retries - 1) {
-        console.log(`ℹ️ Pagamento ainda não disponível. Tentativa ${i + 1}/${retries} — aguardando ${delay/1000}s...`);
-        await new Promise(r => setTimeout(r, delay));
-      } else {
-        throw err;
-      }
+    const resp = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
+      headers: {
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (resp.status === 404) {
+      console.log(`ℹ️ Pagamento ainda não encontrado (${i + 1}/${retries}). Tentando novamente em ${delay / 1000}s...`);
+      await new Promise(r => setTimeout(r, delay));
+      continue;
     }
+
+    if (!resp.ok) {
+      const errText = await resp.text();
+      throw new Error(`Erro na API do Mercado Pago: ${errText}`);
+    }
+
+    const data = await resp.json();
+    return data;
   }
+
+  throw new Error("Pagamento não encontrado após múltiplas tentativas.");
 }
 
 // ✅ Webhook do Mercado Pago
@@ -71,22 +83,14 @@ app.post("/webhook", express.json(), async (req, res) => {
   try {
     console.log("📩 Webhook recebido:", JSON.stringify(req.body).slice(0, 500));
 
-    // Pegando ID do pagamento
     const paymentId = req.body.data?.id || req.body.resource?.id || req.body.id;
     if (!paymentId) return res.status(200).send("No payment id");
 
-    // Tenta obter o pagamento com retry
-    let paymentInfo;
-    try {
-      paymentInfo = await getPaymentWithRetry(paymentId);
-    } catch (err) {
-      console.error("❌ Não foi possível obter o pagamento após retries:", err);
-      return res.status(200).send("Pagamento ainda não disponível");
-    }
-
+    // Busca pagamento diretamente na API REST
+    const paymentInfo = await getPaymentDirect(paymentId);
     console.log("💰 Pagamento consultado:", paymentInfo.id, paymentInfo.status);
 
-    // Só envia para a planilha se aprovado
+    // Só envia para planilha se aprovado
     if (["approved", "paid", "success"].includes(paymentInfo.status)) {
       console.log("✅ Pagamento aprovado:", paymentInfo.payer?.email);
 
@@ -100,7 +104,6 @@ app.post("/webhook", express.json(), async (req, res) => {
         date: new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
       };
 
-      // Envia para Google Sheets via Apps Script
       try {
         const response = await fetch(GOOGLE_SCRIPT_URL, {
           method: "POST",
