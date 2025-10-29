@@ -11,7 +11,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
-// ✅ URL do seu Web App do Google Apps Script (substitua pelo seu)
+// ✅ URL do seu Web App do Google Apps Script
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxwSwmexJtO3PAdMDEjvNf-_JcrpAS3LjuIa2ISig7JxS1G3mSJRljXVrfXPUAyt7FLoA/exec";
 
 // Configuração do Mercado Pago (NÃO ALTERAR)
@@ -25,7 +25,7 @@ app.post("/process_payment", async (req, res) => {
   try {
     const result = await payment.create({
       body: {
-        transaction_amount: 1.00, // valor para teste
+        transaction_amount: 1.00, // valor de teste
         description: "Inscrição - Grupo de Corredores",
         payment_method_id: "pix",
         payer: {
@@ -64,7 +64,7 @@ app.post("/webhook", express.json(), async (req, res) => {
       paymentInfo = mpResp.body || mpResp;
     } catch (err) {
       if (err.message.includes("resource not found")) {
-        console.log("ℹ️ Pagamento ainda não disponível. Ignorando webhook por enquanto.");
+        console.log("ℹ️ Pagamento ainda não disponível. Ignorando webhook temporariamente.");
         return res.status(200).send("Pagamento não disponível ainda");
       } else {
         throw err;
@@ -87,6 +87,7 @@ app.post("/webhook", express.json(), async (req, res) => {
         date: new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
       };
 
+      // Envia para Google Sheets via Apps Script
       try {
         const response = await fetch(GOOGLE_SCRIPT_URL, {
           method: "POST",
@@ -100,7 +101,7 @@ app.post("/webhook", express.json(), async (req, res) => {
         console.error("⚠️ Erro ao enviar dados para planilha:", err);
       }
     } else {
-      console.log("ℹ️ Pagamento não aprovado ainda:", paymentInfo.status);
+      console.log("ℹ️ Pagamento ainda não aprovado:", paymentInfo.status);
     }
 
     res.status(200).send("OK");
