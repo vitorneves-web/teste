@@ -77,7 +77,7 @@ app.post("/process_payment", async (req, res) => {
 
     const result = await payment.create({
       body: {
-        transaction_amount: 12.99,
+        transaction_amount: 1.00,
         description: "Inscrição - Grupo de Corredores",
         payment_method_id: "pix",
         payer: {
