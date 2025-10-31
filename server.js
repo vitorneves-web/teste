@@ -16,9 +16,7 @@ const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyR6qlKPnhAlM
 
 // ✅ Configuração do Mercado Pago
 const ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESS_TOKEN;
-const client = new MercadoPagoConfig({
-  accessToken: ACCESS_TOKEN,
-});
+const client = new MercadoPagoConfig({ accessToken: ACCESS_TOKEN });
 const payment = new Payment(client);
 
 // 🔹 Função para tentar obter o pagamento diretamente na API REST
@@ -42,11 +40,34 @@ async function getPaymentDirect(paymentId, retries = 6, delay = 4000) {
       throw new Error(`Erro na API do Mercado Pago: ${errText}`);
     }
 
-    const data = await resp.json();
-    return data;
+    return await resp.json();
   }
 
   throw new Error("Pagamento não encontrado após múltiplas tentativas.");
+}
+
+// 🔹 Função para enviar dados à planilha (com retry opcional)
+async function sendToSheet(data) {
+  const retries = 3;
+  const delay = 2000;
+
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return await response.text();
+    } catch (err) {
+      console.log(`⚠️ Falha ao enviar para planilha, tentativa ${i + 1}: ${err.message}`);
+      await new Promise(r => setTimeout(r, delay));
+    }
+  }
+
+  console.error("❌ Não foi possível enviar os dados após múltiplas tentativas.");
 }
 
 // ✅ Endpoint para criar pagamento PIX
@@ -54,10 +75,9 @@ app.post("/process_payment", async (req, res) => {
   try {
     const referenceId = crypto.randomUUID();
 
-    // Cria pagamento PIX no Mercado Pago
     const result = await payment.create({
       body: {
-        transaction_amount: 12.99, // valor real do evento
+        transaction_amount: 12.99,
         description: "Inscrição - Grupo de Corredores",
         payment_method_id: "pix",
         payer: {
@@ -74,7 +94,7 @@ app.post("/process_payment", async (req, res) => {
       requestOptions: { idempotencyKey: crypto.randomUUID() },
     });
 
-    // Envia imediatamente para a planilha como "Aguardando pagamento"
+    // Envia para a planilha como "Aguardando pagamento"
     const data = {
       payerFirstName: req.body.payerFirstName,
       payerLastName: req.body.payerLastName,
@@ -87,17 +107,7 @@ app.post("/process_payment", async (req, res) => {
       paymentId: result.id || "",
     };
 
-    try {
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      const text = await response.text();
-      console.log("📋 Dados enviados à planilha:", text);
-    } catch (err) {
-      console.error("⚠️ Falha ao enviar inscrição à planilha:", err);
-    }
+    await sendToSheet(data);
 
     res.json(result);
   } catch (error) {
@@ -114,11 +124,9 @@ app.post("/webhook", bodyParser.json(), async (req, res) => {
     const paymentId = req.body.data?.id || req.body.resource?.id || req.body.id;
     if (!paymentId) return res.status(200).send("No payment id");
 
-    // Busca pagamento diretamente na API REST
     const paymentInfo = await getPaymentDirect(paymentId);
     console.log("💰 Pagamento consultado:", paymentInfo.id, paymentInfo.status);
 
-    // Só envia para planilha se aprovado
     if (["approved", "paid", "success"].includes(paymentInfo.status)) {
       console.log("✅ Pagamento aprovado:", paymentInfo.payer?.email);
 
@@ -134,17 +142,7 @@ app.post("/webhook", bodyParser.json(), async (req, res) => {
         status: "Aprovado",
       };
 
-      try {
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
-        const result = await response.text();
-        console.log("📊 Planilha atualizada com sucesso:", result);
-      } catch (err) {
-        console.error("⚠️ Erro ao enviar dados para planilha:", err);
-      }
+      await sendToSheet(data);
     } else {
       console.log("ℹ️ Pagamento ainda não aprovado:", paymentInfo.status);
     }
@@ -156,8 +154,6 @@ app.post("/webhook", bodyParser.json(), async (req, res) => {
   }
 });
 
-// Porta dinâmica (Render exige isso)
+// Porta dinâmica
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando na porta ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
