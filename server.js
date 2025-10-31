@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 
 // ✅ URL do seu Web App do Google Apps Script
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxwSwmexJtO3PAdMDEjvNf-_JcrpAS3LjuIa2ISig7JxS1G3mSJRljXVrfXPUAyt7FLoA/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyR6qlKPnhAlMn7Klwfts6GRhSUyRl8k7wWEhKrCM1fDjU04mtr_Tt-928BXhNZtMSbgA/exec";
 
 // ✅ Configuração do Mercado Pago
 const ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESS_TOKEN;
