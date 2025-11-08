@@ -153,6 +153,10 @@ section.inscricoes h1 {
   outline: none;
 }
 
+.campo-termos a {
+color: var(--corBranca);
+}
+
 #form-checkout button {
   margin-top: 15px;
   padding: 10px 40px;
@@ -168,6 +172,25 @@ section.inscricoes h1 {
 #form-checkout button:hover {
   box-shadow: 0px 0px 8px #7c1818;
 }
+
+/* === CAMPOS LADO A LADO === */
+
+#form-checkout .row {
+  display: flex;
+  gap: 20px;
+}
+
+#form-checkout .row .campo {
+  flex: 1;
+}
+
+/* Responsivo – no celular volta para uma coluna */
+@media (max-width: 600px) {
+  #form-checkout .row {
+    flex-direction: column;
+  }
+}
+
 /* Estilo dos Pagamentos */
 
 section.pixBox {
@@ -267,3 +290,154 @@ section.pixBox h3 {
     color: var(--corBranca);
     border: 2px solid var(--corCinzaClaro);
 }
+
+/* ===== MODAIS ===== */
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.modal-content {
+  background: var(--corBranca);
+  color: var(--corCinzaEscuro);
+  width: 100%;
+  max-width: 600px;
+  padding: 25px;
+  border-radius: 12px;
+  position: relative;
+  animation: modalAnim .25s ease;
+}
+
+@keyframes modalAnim {
+  from { transform: scale(0.7); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.close {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: red;
+}
+
+.modal-content button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: var(--corVermelha);
+  border: 0;
+  border-radius: 30px;
+  color: var(--corBranca);
+  cursor: pointer;
+  transition: .5s;
+}
+
+.modal-content button:hover {
+  box-shadow: 0px 0px 8px #7c1818;
+}
+
+/* ============================
+   MODAL - FUNDO ESCURO
+============================ */
+.modal {
+  display: none; /* começa escondido */
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6); /* fundo escuro */
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* ============================
+   CONTEÚDO DO MODAL
+============================ */
+.modal-content {
+  background: white;
+  width: 100%;
+  max-width: 600px;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  position: relative;
+  max-height: 90vh;       /* impede de estourar a tela */
+  overflow-y: auto;       /* scroll interno se o texto for grande */
+}
+
+/* ============================
+   BOTÃO DE FECHAR (X)
+============================ */
+.modal-content .close {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+/* ============================
+   TÍTULO E PARÁGRAFOS
+============================ */
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.modal-content p {
+  line-height: 1.6;
+  white-space: pre-line; /* preserva espaçamentos e quebras */
+}
+
+/* ============================
+   BOTÃO INTERNO
+============================ */
+.modal-content button {
+  margin-top: 20px;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 8px;
+  background: var(--corVermelha);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+/* teste */
+
+.campo-termos label {
+  display: flex !important;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 8px;
+  color: var(--corBranca);
+}
+
+.campo-termos input[type="checkbox"] {
+  max-width: 15px;
+  max-height: 15px;
+  margin: 0;
+}
+
+
