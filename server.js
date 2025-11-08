@@ -96,16 +96,35 @@ app.post("/process_payment", async (req, res) => {
 
     // Envia para a planilha como "Aguardando pagamento"
     const data = {
+      status: "Aguardando pagamento",
+
       payerFirstName: req.body.payerFirstName,
       payerLastName: req.body.payerLastName,
-      email: req.body.email,
+      identificationType: req.body.identificationType,
       identificationNumber: req.body.identificationNumber,
-      transactionAmount: 12.99,
+      email: req.body.email,
+
+      estado: req.body.estado,
+      cidade: req.body.cidade,
+
+      celular: req.body.celular,
+      celular_emergencia: req.body.celular_emergencia,
+
+      data_nascimento: req.body.data_nascimento,
+
+      sexo: req.body.sexo,
+      camisa: req.body.camisa,
+      percurso: req.body.percurso,
+
+      apelido: req.body.apelido,
+      equipe: req.body.equipe,
+
       date: new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
-      status: "Aguardando pagamento",
+
       external_reference: referenceId,
-      paymentId: result.id || "",
+      paymentId: result.id || ""
     };
+
 
     await sendToSheet(data);
 
