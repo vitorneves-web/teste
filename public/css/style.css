@@ -89,6 +89,12 @@ header .btn-contato button:hover {
 
 /* ESTILO DE: INSCRIÇÕES */
 
+#corrida-tag {
+  text-align: center;
+  padding: 20px;
+  font-size: 2.5rem;
+}
+
 .inscricoes {
     display: flex;
     justify-content: space-around;
@@ -229,4 +235,65 @@ header .btn-contato button:hover {
     font-size: 1rem;
 }
 
+
+/* ==============================
+   MEDIA QUERIES - RESPONSIVO
+=================================*/
+
+/* ===== Celulares pequenos (até 480px) ===== */
+@media screen and (max-width: 480px) {
+    #corrida-tag {
+      font-size: 1.3rem;
+    }
+    .inscricoes {
+      flex-direction: column-reverse;
+    }
+
+    .inscricoes .kit-more > img {
+      max-width: 0px;
+    }
+    
+    .inscricoes .kit-more p {
+      text-align: justify;
+      padding-bottom: 15px;
+    }
+    
+}
+
+/* ===== Celulares médios (481px a 768px) ===== */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    #corrida-tag {
+      font-size: 1.5rem;
+    }
+    .inscricoes {
+      flex-direction: column-reverse;
+    }
+
+    .inscricoes .kit-more > img {
+      max-width: 0px;
+    }
+    
+    .inscricoes .kit-more p {
+      text-align: justify;
+      padding-bottom: 15px;
+    }
+}
+/* ===== Tablets (769px a 1024px) ===== */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    #corrida-tag {
+      font-size: 1.7rem;
+    }
+    .inscricoes {
+      flex-direction: column-reverse;
+    }
+
+    .inscricoes .kit, .inscricoes .kit-more, .inscricoes .evento-info-tag, .inscricoes .evento-info-more {
+      max-width: 100%;
+    }
+    
+    .inscricoes .kit-more p {
+      text-align: justify;
+      padding-bottom: 15px;
+    }
+}
 

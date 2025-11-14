@@ -467,3 +467,218 @@ section.pixBox h3 {
     max-height: 200px;
     margin-bottom: 10px;
 }
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
+
+/* CELULARES PEQUENOS (320px - 480px) */
+@media (max-width: 480px) {
+  
+  header > .interface {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  header nav ul li {
+    display: block;
+    padding: 8px 0;
+  }
+
+  header .btn-contato button {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .form-pagamento {
+    max-width: 100px;
+    flex-direction: row;
+  }
+
+  .form-pay {
+    max-width: 50px;
+    width: 50px;
+  }
+
+  .all-form {
+    flex-direction: column;
+    padding: 0 5%;
+  }
+
+  .inscricoes .interface {
+    flex-direction: column;
+    max-width: 100%;
+    min-width: auto;
+    padding: 10px;
+  }
+
+  #form-checkout .row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .detalhes-pay {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .detalhes-pay-space {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .container {
+    width: 100%;
+    min-width: auto;
+    padding: 10px;
+  }
+
+  #pixBox img {
+    max-width: 150px;
+    max-height: 150px;
+  }
+
+  .campo-termos {
+    font-size: 0.8rem;
+  }
+}
+
+/* CELULARES MÉDIOS/GRANDES (481px - 767px) */
+@media (min-width: 481px) and (max-width: 767px) {
+
+  header > .interface {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  header nav ul li {
+    display: inline-block;
+    padding: 0 20px;
+  }
+
+  header .btn-contato button {
+    padding: 8px 30px;
+    font-size: 16px;
+  }
+
+  .form-pagamento {
+    max-width: 100px;
+    flex-direction: row;
+  }
+
+  .form-pay {
+    max-width: 50px;
+    width: 50px;
+  }
+
+  .all-form {
+    flex-direction: column;
+    padding: 0 5%;
+  }
+
+  .inscricoes .interface {
+    max-width: 100%;
+    min-width: auto;
+    padding: 15px;
+  }
+
+  #form-checkout .row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .detalhes-pay {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+  }
+
+  .detalhes-pay-space {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .container {
+    width: 100%;
+    padding: 12px;
+  }
+
+  #pixBox img {
+    max-width: 180px;
+    max-height: 180px;
+  }
+
+  .campo-termos {
+    font-size: 0.8rem;
+  }
+}
+
+/* TABLETS (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+
+  header > .interface {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  header nav ul li {
+    padding: 0 25px;
+  }
+
+  header .btn-contato button {
+    padding: 10px 35px;
+    font-size: 17px;
+  }
+
+  .form-pagamento {
+    max-width: 100px;
+    flex-direction: row;
+  }
+
+  .form-pay {
+    max-width: 50px;
+    width: 50px;
+  }
+
+  .all-form {
+    flex-direction: column;
+    padding: 0 4%;
+  }
+
+  .inscricoes .interface {
+    max-width: 700px;
+    min-width: auto;
+    padding: 15px;
+  }
+
+  #form-checkout .row {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .detalhes-pay {
+    margin: 15px auto 0px auto;
+    max-width: 450px;
+    padding: 15px;
+  }
+
+  .detalhes-pay-space {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .container {
+    width: 420px;
+    padding: 15px;
+  }
+
+  #pixBox img {
+    max-width: 200px;
+    max-height: 200px;
+  }
+}
