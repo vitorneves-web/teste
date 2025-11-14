@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/pagamento01.css">
+    <title>SNAC - Kit Simples</title>
+</head>
+<body>
+    <header>
+        <section class="interface">
+
+        <div class="logo">
+            <a href="index.html">
+            <img src="imagens/logo-snac.png" alt="Logo de Se Não Aguentar Corra">
+            </a>
+        </div> <!--logo-->
+
+        <nav class="menu-desktop">
+            <ul>
+            <li><a href="index.html">Inscrições</a></li>
+            <li><a href="#">Sobre nós</a></li>
+            <li><a href="#">Calendário 2025</a></li>
+            </ul>
+        </nav> <!--menu-desktop-->
+
+        <div class="btn-contato">
+            <a href="#">
+            <button>Contato</button>
+            </a>
+        </div> <!--btn-contato-->
+
+        </section> <!--interface-->
+    </header>
+    <main>
+        <div class="form-pagamento">
+            <div class="form-pay" id="btn-pix">Pix</div>
+            <div class="form-pay" id="btn-cartao">Cartão</div>
+        </div>
+        <div id="sec-pix">
+            <div class="all-form">
+                <section class="inscricoes" id="inscricoes">
+                    <div class="interface">
+                    <form id="form-checkout" action="/process_payment" method="post">
+                    <div class="row">
+                        <div class="campo">
+                        <label>Nome:</label>
+                        <input name="payerFirstName" id="form-checkout__payerFirstName" type="text" required />
+                        </div>
+                        <div class="campo">
+                        <label>Sobrenome:</label>
+                        <input name="payerLastName" id="form-checkout__payerLastName" type="text" required />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="campo">
+                        <label>Tipo de documento:</label>
+                        <select id="form-checkout__identificationType" name="identificationType" required></select>
+                        </div>
+                        <div class="campo">
+                        <label>Número do documento:</label>
+                        <input id="form-checkout__identificationNumber" name="identificationNumber" type="text" required />
+                        </div>
+                    </div>
+                    <div class="campo">
+                        <label>E-mail:</label>
+                        <input id="form-checkout__email" name="email" type="email" required />
+                    </div>
+                    <div class="row">
+                        <div class="campo">
+                        <label>Estado:</label>
+                        <select id="estado" name="estado" required>
+                            <option value="">Selecione...</option>
+                        </select>
+                        </div>
+                        <div class="campo">
+                        <label>Cidade:</label>
+                        <select id="cidade" name="cidade" required>
+                            <option value="">Selecione o estado</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="campo">
+                        <label>Celular:</label>
+                        <input id="celular" name="celular" type="text" required />
+                    </div>
+                    <div class="campo">
+                        <label>Celular de Emergencia:</label>
+                        <input id="celular_emergencia" name="celular_emergencia" type="text" required />
+                    </div>
+                    <div class="row">
+                        <div class="campo">
+                            <label>Data de Nascimento:</label>
+                            <input
+                            type="date"
+                            id="data_nascimento"
+                            name="data_nascimento"
+                            required
+                            />
+                        </div>
+                        <div class="campo">
+                            <label>Gênero:</label>
+                            <select name="sexo" required>
+                                <option value="">Selecione...</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Feminino">Feminino</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="campo">
+                        <label>Percurso:</label>
+                        <select name="percurso" required>
+                            <option value="">Selecione...</option>
+                            <option value="5km">6KM - CORRIDA</option>
+                            <option value="10km">3KM - CAMINHADA</option>
+                        </select>
+                        </div>
+                        <div class="campo">
+                            <label>Equipe/Assessoria:</label>
+                            <input type="text" name="equipe" placeholder="Opcional" />
+                        </div>
+                    </div>
+                    <input type="hidden" id="valorKit" value="55">
+                    <!-- ✅ Termos -->
+                    <div class="campo-termos">
+                        <label>
+                        <input type="checkbox" required />
+                        Li e aceito o <a href="#" onclick="abrirTermo1()">Termo de Responsabilidade</a>
+                        </label>
+                        <label>
+                        <input type="checkbox" required />
+                        Li e aceito a <a href="#" onclick="abrirTermo2()">Política de Cancelamento</a>
+                        </label>
+                    </div>
+                    <!-- ✅ valores fixos para o backend -->
+                    <input type="hidden" name="transactionAmount" value="59.00" />
+                    <input type="hidden" name="description" value="Inscrição - Calebe" />
+                    <button type="submit">Gerar Pagamento</button>
+                    </form>
+                    </div>
+                    </section>
+                    <script>
+                    const estadosECidades = {
+                        "AC": [
+                        "Rio Branco", "Cruzeiro do Sul", "Sena Madureira", "Tarauacá", "Feijó",
+                        "Brasiléia", "Xapuri", "Senador Guiomard", "Mâncio Lima", "Plácido de Castro",
+                        "Outra"
+                        ],
+                        "AL": [
+                        "Maceió", "Arapiraca", "Rio Largo", "Palmeira dos Índios", "Marechal Deodoro",
+                        "São Miguel dos Campos", "Penedo", "União dos Palmares", "Delmiro Gouveia", "Campo Alegre",
+                        "Outra"
+                        ],
+                        "AP": [
+                        "Macapá", "Santana", "Laranjal do Jari", "Oiapoque", "Porto Grande",
+                        "Mazagão", "Pedra Branca", "Tartarugalzinho", "Amapá", "Calçoene",
+                        "Outra"
+                        ],
+                        "AM": [
+                        "Manaus", "Parintins", "Itacoatiara", "Manacapuru", "Coari",
+                        "Tefé", "Tabatinga", "Maués", "Iranduba", "Humaitá",
+                        "Outra"
+                        ],
+                        "BA": [
+                        "Salvador", "Feira de Santana", "Vitória da Conquista", "Camaçari", "Itabuna",
+                        "Juazeiro", "Lauro de Freitas", "Ilhéus", "Jequié", "Teixeira de Freitas",
+                        "Outra"
+                        ],
+                        "CE": [
+                        "Fortaleza", "Caucaia", "Juazeiro do Norte", "Maracanaú", "Sobral",
+                        "Crato", "Iguatu", "Maranguape", "Quixadá", "Pacatuba",
+                        "Outra"
+                        ],
+                        "DF": [
+                        "Brasília", "Taguatinga", "Ceilândia", "Gama", "Guará",
+                        "Planaltina", "Sobradinho", "Samambaia", "Recanto das Emas", "São Sebastião",
+                        "Outra"
+                        ],
+                        "ES": [
+                        "Vitória", "Vila Velha", "Serra", "Cariacica", "Linhares",
+                        "Cachoeiro de Itapemirim", "Colatina", "Guarapari", "Aracruz", "São Mateus",
+                        "Outra"
+                        ],
+                        "GO": [
+                        "Goiânia", "Aparecida de Goiânia", "Anápolis", "Rio Verde", "Luziânia",
+                        "Águas Lindas", "Valparaíso", "Trindade", "Formosa", "Itumbiara",
+                        "Outra"
+                        ],
+                        "MA": [
+                        "São Luís", "Imperatriz", "São José de Ribamar", "Timon", "Caxias",
+                        "Codó", "Paço do Lumiar", "Açailândia", "Bacabal", "Balsas",
+                        "Outra"
+                        ],
+                        "MT": [
+                        "Cuiabá", "Várzea Grande", "Rondonópolis", "Sinop", "Tangará da Serra",
+                        "Lucas do Rio Verde", "Sorriso", "Cáceres", "Primavera do Leste", "Barra do Garças",
+                        "Outra"
+                        ],
+                        "MS": [
+                        "Campo Grande", "Dourados", "Três Lagoas", "Corumbá", "Ponta Porã",
+                        "Naviraí", "Nova Andradina", "Aquidauana", "Sidrolândia", "Maracaju",
+                        "Outra"
+                        ],
+                        "MG": [
+                        "Belo Horizonte", "Uberlândia", "Contagem", "Juiz de Fora", "Betim",
+                        "Montes Claros", "Ribeirão das Neves", "Uberaba", "Governador Valadares", "Ipatinga",
+                        "Outra"
+                        ],
+                        "PA": [
+                        "Belém", "Ananindeua", "Santarém", "Marabá", "Parauapebas",
+                        "Castanhal", "Tucuruí", "Bragança", "Abaetetuba", "Cametá",
+                        "Outra"
+                        ],
+                        "PB": [
+                        "João Pessoa", "Campina Grande", "Santa Rita", "Patos", "Bayeux",
+                        "Sousa", "Cabedelo", "Cajazeiras", "Guarabira", "Sapé",
+                        "Outra"
+                        ],
+                        "PR": [
+                        "Curitiba", "Londrina", "Maringá", "Ponta Grossa", "Cascavel",
+                        "São José dos Pinhais", "Foz do Iguaçu", "Colombo", "Guarapuava", "Paranaguá",
+                        "Outra"
+                        ],
+                        "PE": [
+                        "Recife", "Jaboatão dos Guararapes", "Olinda", "Caruaru", "Petrolina",
+                        "Paulista", "Cabo de Santo Agostinho", "Camaragibe", "Garanhuns", "Igarassu",
+                        "Outra"
+                        ],
+                        "PI": [
+                        "Teresina", "Parnaíba", "Picos", "Piripiri", "Floriano",
+                        "Campo Maior", "Barras", "União", "Altos", "Luís Correia",
+                        "Outra"
+                        ],
+                        "RJ": [
+                        "Rio de Janeiro", "São Gonçalo", "Duque de Caxias", "Nova Iguaçu", "Niterói",
+                        "Belford Roxo", "São João de Meriti", "Campos", "Petrópolis", "Volta Redonda",
+                        "Outra"
+                        ],
+                        "RN": [
+                        "Natal", "Mossoró", "Parnamirim", "São Gonçalo do Amarante", "Macaíba",
+                        "Ceará-Mirim", "Caicó", "Assu", "Currais Novos", "Nova Cruz",
+                        "Outra"
+                        ],
+                        "RS": [
+                        "Porto Alegre", "Caxias do Sul", "Pelotas", "Canoas", "Santa Maria",
+                        "Gravataí", "Viamão", "Novo Hamburgo", "São Leopoldo", "Rio Grande",
+                        "Outra"
+                        ],
+                        "RO": [
+                        "Porto Velho", "Ji-Paraná", "Ariquemes", "Cacoal", "Vilhena",
+                        "Rolim de Moura", "Jaru", "Guajará-Mirim", "Pimenta Bueno", "Buritis",
+                        "Outra"
+                        ],
+                        "RR": [
+                        "Boa Vista", "Rorainópolis", "Caracaraí", "Pacaraima", "Alto Alegre",
+                        "Mucajaí", "Cantá", "Bonfim", "Normandia", "São João da Baliza",
+                        "Outra"
+                        ],
+                        "SC": [
+                        "Florianópolis", "Joinville", "Blumenau", "Chapecó", "Itajaí",
+                        "São José", "Criciúma", "Jaraguá do Sul", "Lages", "Balneário Camboriú",
+                        "Outra"
+                        ],
+                        "SP": [
+                        "São Paulo", "Campinas", "Guarulhos", "Santos", "Sorocaba",
+                        "Ribeirão Preto", "São José dos Campos", "Osasco", "Santo André", "Barueri",
+                        "Outra"
+                        ],
+                        "SE": [
+                        "Aracaju", "Nossa Senhora do Socorro", "Lagarto", "Itabaiana", "Estância",
+                        "Tobias Barreto", "São Cristóvão", "Simão Dias", "Propriá", "Itabaianinha",
+                        "Outra"
+                        ],
+                        "TO": [
+                        "Palmas", "Araguaína", "Gurupi", "Porto Nacional", "Paraíso do Tocantins",
+                        "Colinas do Tocantins", "Guaraí", "Dianópolis", "Formoso do Araguaia", "Tocantinópolis",
+                        "Outra"
+                        ]
+                    };
+                    // Preenche estados + atualiza cidades (igual já estava)
+                    const estadoSelect = document.getElementById("estado");
+                    const cidadeSelect = document.getElementById("cidade");
+                    for (const sigla in estadosECidades) {
+                        estadoSelect.innerHTML += `<option value="${sigla}">${sigla}</option>`;
+                    }
+                    estadoSelect.addEventListener("change", () => {
+                        const estado = estadoSelect.value;
+                        cidadeSelect.innerHTML = "<option value=''>Selecione...</option>";
+                        if (estado && estadosECidades[estado]) {
+                        estadosECidades[estado].forEach(cidade => {
+                            cidadeSelect.innerHTML += `<option value="${cidade}">${cidade}</option>`;
+                        });
+                        }
+                    });
+                </script>
+                <!-- DETALHES DA COMPRA -->
+                <div class="detalhes-pay">
+                    <div class="detalhes-pay-space">
+                        <P><strong>Produto</strong></P>
+                        <P><strong>Qtd</strong></P>
+                        <P><strong>Preço</strong></P>
+                    </div>
+            
+                    <div class="detalhes-pay-space">
+                        <p>Kit Simples</p>
+                        <p>1</p>
+                        <p>R$55,00</p>
+                    </div>
+                    <div class="divisor"></div>
+            
+                    <div class="detalhes-pay-space">
+                        <p>Subtotal</p>
+                        <p>R$55,00</p>
+                    </div>
+                    <div class="detalhes-pay-space">
+                        <p>Tarifas</p>
+                        <p>R$4,00</p>
+                    </div>
+            
+                    <div class="detalhes-pay-space">
+                        <p><strong>Total</strong></p>
+                        <p><strong>R$59,00</strong></p>
+                    </div>
+                    <!-- AREA DE PAGAMENTOS -->
+                    <section class="pixBox" id="pixBox">
+                    <div class="container">
+                    <div id="result"></div>
+                    </div>
+                </section>
+                </div>
+            </div>
+        </div>
+
+<!-- SECTION CARTÃO -->
+<section id="sec-cartao" style="display: none;">
+    <h3>Pagamento com Cartão</h3>
+    <p>Indisponivél no momento...</p>
+</section>
+
+    </main>
+
+    <!-- ✅ Modal Termo de Responsabilidade -->
+    <div id="modalTermo1" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="fecharTermo1()">&times;</span>
+        <h2>Termo de Responsabilidade</h2>
+        <p>
+        Eu, “identificado no cadastramento da inscrição”, no perfeito uso de minhas faculdades, DECLARO para os devidos fins de direito que:
+
+        Estou ciente de que se trata de uma “Corrida de Rua” cujo percurso é de meu conhecimento.
+
+        Estou em plenas condições físicas e psicológicas de participar deste Evento e estou ciente que não existe nenhuma recomendação médica que me impeça de praticar atividades físicas.
+
+        Li, conheço, aceito e submeto-me integralmente a todos os termos do Regulamento do Evento
+
+        ­­Declaro que não portarei, nem utilizarei, no percurso e no entorno, bem como no local de entrega de kits, nenhum material publicitário, promocional ou político, sem a devida autorização por escrito da Organizadora; e, também, de qualquer material ou objeto que ponha em risco a segurança dos participantes.
+
+        Estou ciente das penalidades e possível desclassificação que posso sofrer caso descumpra o Regulamento ou cometa atitude antiesportiva. Excluo meu direito de reclamação sobre tais aspectos do Evento.
+
+        Autorizo o uso de minha imagem, para fins de divulgação do Evento, por fotos, vídeos e entrevistas apenas em meios de comunicação vinculados com a organizadora do evento, sem ônus para a Organizadora e patrocinadores.
+
+        Autorizo o uso dos meus dados pessoais fornecidos no ato da inscrição para utilização por parte da organização do evento e seus patrocinadores para fins de publicidade e propaganda.
+
+        Estou ciente que na hipótese de alteração na data, horário e local do Evento, bem como interrupção e cancelamento do Evento, as eventuais despesas referentes à locomoção, preparação, estadia, viagem, entre outras serão suportados única e exclusivamente por mim, isentando a Organizadora e patrocinadores pelo ressarcimento de quaisquer destas despesas.
+
+        Compreendi e estou de acordo com todos os itens deste termo.
+        </p>
+        <button onclick="fecharTermo1()">Fechar</button>
+    </div>
+    </div>
+
+    <!-- ✅ Modal Política de Cancelamento -->
+    <div id="modalTermo2" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="fecharTermo2()">&times;</span>
+        <h2>Política de Cancelamento</h2>
+        <p>
+        > As inscrições poderão ser canceladas no prazo de 7 (sete) dias a contar da data de sua compra conforme está estipulado no código de defesa do consumidor. Após este período, os valores não serão devolvidos em caso de desistência 
+
+        > O não comparecimento não dá direito a reembolso da inscrição.
+        </p>
+        <button onclick="fecharTermo2()">Fechar</button>
+    </div>
+    </div>
+
+    <script>
+    function abrirTermo1() {
+    document.getElementById("modalTermo1").style.display = "flex";
+    }
+
+    function fecharTermo1() {
+    document.getElementById("modalTermo1").style.display = "none";
+    }
+
+    function abrirTermo2() {
+    document.getElementById("modalTermo2").style.display = "flex";
+    }
+
+    function fecharTermo2() {
+    document.getElementById("modalTermo2").style.display = "none";
+    }
+
+    // Fechar clicando fora da caixa
+    window.onclick = function(event) {
+    const m1 = document.getElementById("modalTermo1");
+    const m2 = document.getElementById("modalTermo2");
+
+    if (event.target === m1) m1.style.display = "none";
+    if (event.target === m2) m2.style.display = "none";
+    };
+    </script>
+
+  <!-- SDK Mercado Pago -->
+  <script src="https://sdk.mercadopago.com/js/v2"></script>
+  <script src="javascript/script.js"></script>
+</body>
+</html>

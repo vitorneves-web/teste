@@ -73,13 +73,17 @@ async function sendToSheet(data) {
 // ✅ Endpoint para criar pagamento PIX
 app.post("/process_payment", async (req, res) => {
   try {
+    // 🔥 CRIA O referenceId AQUI
     const referenceId = crypto.randomUUID();
 
     const result = await payment.create({
       body: {
-        transaction_amount: 1.00,
+        transaction_amount: Number(req.body.valor), // ← OK
         description: "Inscrição - Grupo de Corredores",
         payment_method_id: "pix",
+
+        external_reference: referenceId,   // ← AGORA FUNCIONA ✔️
+
         payer: {
           email: req.body.email,
           first_name: req.body.payerFirstName,
@@ -89,12 +93,11 @@ app.post("/process_payment", async (req, res) => {
             number: req.body.identificationNumber,
           },
         },
-        external_reference: referenceId,
       },
       requestOptions: { idempotencyKey: crypto.randomUUID() },
     });
 
-    // Envia para a planilha como "Aguardando pagamento"
+    // Envia para a planilha
     const data = {
       status: "Aguardando pagamento",
 
@@ -121,10 +124,9 @@ app.post("/process_payment", async (req, res) => {
 
       date: new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
 
-      external_reference: referenceId,
+      external_reference: referenceId,  // ← ENVIA PARA A PLANILHA TAMBÉM
       paymentId: result.id || ""
     };
-
 
     await sendToSheet(data);
 
@@ -134,6 +136,7 @@ app.post("/process_payment", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 // ✅ Webhook do Mercado Pago
 app.post("/webhook", bodyParser.json(), async (req, res) => {

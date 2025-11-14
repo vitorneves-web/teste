@@ -1,6 +1,21 @@
+function toggleAba(kitDiv) {
+    const escAba = kitDiv.nextElementSibling;
+
+    if (!escAba || !escAba.classList.contains("esc-aba")) {
+        console.warn("A aba correspondente não foi encontrada.");
+        return;
+    }
+
+    // abre/fecha a aba correspondente
+    escAba.style.display =
+        escAba.style.display === "block" ? "none" : "block";
+}
+
+// TESTE
+
 document.addEventListener("DOMContentLoaded", () => {
   // Inicializa o Mercado Pago com sua Public Key
-  const mp = new MercadoPago("TEST-575a3b82-701d-46fe-a1a9-ca4efc92944a"); // substitua pela sua Public Key
+  const mp = new MercadoPago("APP_USR-ebc5252c-beaa-4a8a-8d87-34570f59d93a"); // substitua pela sua Public Key
 
   // Carrega os tipos de documento (CPF, CNPJ etc)
   (async function getIdentificationTypes() {
@@ -93,4 +108,30 @@ document.addEventListener("DOMContentLoaded", () => {
       result.innerHTML = `<p>Erro ao gerar pagamento: ${err.message}</p>`;
     }
   });
+});
+
+// TESTANDO SELECIONAR FORMA DE PAGAMENTO
+
+const formas = document.querySelectorAll(".form-pay");
+const secPix = document.getElementById("sec-pix");
+const secCartao = document.getElementById("sec-cartao");
+
+// Começar com PIX selecionado
+document.getElementById("btn-pix").classList.add("ativa");
+
+formas.forEach(f => {
+    f.addEventListener("click", () => {
+        // Troca visual
+        formas.forEach(x => x.classList.remove("ativa"));
+        f.classList.add("ativa");
+
+        // Exibe a section correspondente
+        if (f.id === "btn-pix") {
+            secPix.style.display = "block";
+            secCartao.style.display = "none";
+        } else {
+            secPix.style.display = "none";
+            secCartao.style.display = "block";
+        }
+    });
 });
