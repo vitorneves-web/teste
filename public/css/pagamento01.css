@@ -543,6 +543,10 @@ section.pixBox h3 {
   .campo-termos {
     font-size: 0.8rem;
   }
+
+  #pix-code {
+    max-width: 250px;
+  }
 }
 
 /* CELULARES MÉDIOS/GRANDES (481px - 767px) */
@@ -614,6 +618,10 @@ section.pixBox h3 {
 
   .campo-termos {
     font-size: 0.8rem;
+  }
+
+  #pix-code {
+    max-width: 320px;
   }
 }
 
