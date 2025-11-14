@@ -405,18 +405,19 @@ section.pixBox.mostrar {
 }
 
 .container {
-    margin: 18px auto;
-    max-width: 500px;
-    width: 100%;
-    background: var(--corCinzaClaro);
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 12px 0px #202020;
+    margin: 0 auto;
+    max-width: 400px;
+    min-width: 400px;
+    background: var(--corBranca);
+    padding: 15px;
+    border-radius: 0px 0px 5px 5px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
 }
 
 section.pixBox h3 {
-    padding-bottom: 15px;
+    padding-bottom: 10px;
     font-size: 1rem;
+    color: var(--corCinza-Escuro);
 }
 
 #result img {
@@ -434,7 +435,7 @@ section.pixBox h3 {
   padding: 10px 40px;
   font-size: 18px;
   font-weight: 600;
-  background-color: var(--corVermelha);
+  background-color: var(--corLaranja);
   border: 0;
   border-radius: 30px;
   cursor: pointer;
@@ -442,11 +443,11 @@ section.pixBox h3 {
 }
 
 #result button:hover {
-  box-shadow: 0px 0px 8px #7c1818;
+  box-shadow: 0px 0px 8px #E56C00;
 }
 
 #result a {
-  color: var(--corCinza);
+  color: var(--corCinza-Claro);
   text-decoration: none;
   display: inline-block;
   transition: 0.5s;
@@ -468,8 +469,8 @@ section.pixBox h3 {
     margin-bottom: 10px;
 }
 
-#copiarPixBtn {
-    background-color: var(--corCinzaMedio);
+/* #copiarPixBtn {
+    background-color: var(--corLaranja);
     padding: 12px;
     font-size: 1.1rem;
     border-radius: 10px;
@@ -477,4 +478,4 @@ section.pixBox h3 {
     transition: .5s;
     color: var(--corBranca);
     border: 2px solid var(--corCinzaClaro);
-}
+} */
