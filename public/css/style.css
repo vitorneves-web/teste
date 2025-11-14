@@ -49,7 +49,7 @@ header .logo img {
   border-radius: 50%;
 }
 
-header a {
+header .menu-desktop a {
   color: var(--corBranca);
   text-decoration: none;
   display: inline-block;
@@ -57,16 +57,16 @@ header a {
   font-family: var(--fonte-destaque);
 }
 
-header a:hover {
+header .menu-desktop a:hover {
   color: var(--corCinza-Claro);
   transform: scale(1.05);
 }
 
-header nav ul {
+header .menu-desktop ul {
   list-style-type: none;
 }
 
-header nav ul li {
+header .menu-desktop ul li {
   display: inline-block;
   padding: 0 40px;
 }
@@ -86,6 +86,61 @@ header .btn-contato button:hover {
   box-shadow: 0px 0px 8px #E56C00;
 }
 
+/* Estilo do Menu Mobile */
+
+.btn-menu-mobile {
+    display: none;
+}
+
+.btn-menu-mobile i {
+    font-size: 2.8rem;
+    color: var(--corBranca);
+    cursor: pointer;
+}
+
+header .menu-mobile {
+    position: fixed;
+    top: 0;
+    left: 100%;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--corCinza-Escuro);
+    text-align: left;
+    padding: 32px 0;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.menu-mobile ul {
+    list-style: none;
+    padding: 64px 0;
+}
+
+.menu-mobile ul li a {
+    color: var(--corBranca);
+    font-size: 1.4rem;
+    text-decoration: none;
+    padding: 24px;
+    display: block;
+    transition: .5s;
+}
+
+.menu-mobile ul li a:hover {
+    background-color: var(--corCinzaClaro);
+    color: var(--corLaranja);
+}
+
+.menu-mobile .bi-x-lg {
+    font-size: 2rem;
+    color: var(--corBranca);
+    padding: 24px;
+    cursor: pointer;
+}
+
+.menu-mobile.abrir-menu {
+    left: 0;
+    pointer-events: initial;
+}
 
 /* ESTILO DE: INSCRIÇÕES */
 

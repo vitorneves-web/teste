@@ -1,0 +1,17 @@
+@media (max-width: 1000px) {
+    .menu-desktop {
+        display: none;
+    }
+
+    .btn-contato {
+        display: none;
+    }
+
+}
+
+@media (max-width: 1000px) {
+    .btn-menu-mobile {
+        display: block;
+    }
+}
+
