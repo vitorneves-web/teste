@@ -389,3 +389,70 @@ color: var(--corCinza-Claro);
 #sec-cartao {
   text-align: center;
 }
+
+/* ESTILO DO PIXBOX */
+
+section.pixBox h3 {
+    padding-bottom: 15px;
+    font-size: 1rem;
+}
+
+#result img {
+  margin: 15px 0;
+  border: 2px solid #eee;
+  border-radius: 10px;
+}
+
+#result p {
+  margin-bottom: 15px;
+}
+
+#result button {
+  margin-top: 15px;
+  padding: 10px 40px;
+  font-size: 18px;
+  font-weight: 600;
+  background-color: var(--corVermelha);
+  border: 0;
+  border-radius: 30px;
+  cursor: pointer;
+  color: var(--corBranca);
+}
+
+#result button:hover {
+  box-shadow: 0px 0px 8px #7c1818;
+}
+
+#result a {
+  color: var(--corCinza);
+  text-decoration: none;
+  display: inline-block;
+  transition: 0.5s;
+  font-family: var(--fonte-destaque);
+}
+
+#pix-code {
+  margin-top: 10px;
+}
+
+#pixBox {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#pixBox img {
+    max-width: 200px;
+    max-height: 200px;
+    margin-bottom: 10px;
+}
+
+#copiarPixBtn {
+    background-color: var(--corCinzaMedio);
+    padding: 12px;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .5s;
+    color: var(--corBranca);
+    border: 2px solid var(--corCinzaClaro);
+}
