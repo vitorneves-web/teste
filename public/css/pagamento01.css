@@ -406,8 +406,8 @@ section.pixBox.mostrar {
 
 .container {
     margin: 0 auto;
-    max-width: 400px;
-    min-width: 400px;
+    max-width: 450px;
+    min-width: 350px;
     background: var(--corBranca);
     padding: 15px;
     border-radius: 0px 0px 5px 5px;
