@@ -15,7 +15,7 @@ function toggleAba(kitDiv) {
 
 document.addEventListener("DOMContentLoaded", () => {
   // Inicializa o Mercado Pago com sua Public Key
-  const mp = new MercadoPago("APP_USR-ebc5252c-beaa-4a8a-8d87-34570f59d93a"); // substitua pela sua Public Key
+  const mp = new MercadoPago("APP_USR-7e32e92b-67bc-4ab4-8115-64fb98294b3a"); // substitua pela sua Public Key
 
   // Carrega os tipos de documento (CPF, CNPJ etc)
   (async function getIdentificationTypes() {
