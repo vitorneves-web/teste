@@ -176,6 +176,19 @@ app.post("/webhook", bodyParser.json(), async (req, res) => {
   }
 });
 
+// Mensagem pós pagamento:
+
+app.get("/status-pagamento", async (req, res) => {
+    const id = req.query.payment_id;
+
+    try {
+        const status = await getStatusFromSheet(id); // você já tem isso implementado
+        res.json({ status });
+    } catch (e) {
+        res.json({ status: "não encontrado" });
+    }
+});
+
 // Porta dinâmica
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));

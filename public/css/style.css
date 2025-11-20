@@ -21,6 +21,10 @@
     box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 h1,h2,h3,h4 {
     color: var(--corCinza-Medio);
 }
@@ -142,11 +146,48 @@ header .menu-mobile {
     pointer-events: initial;
 }
 
+/* ESTILO DE: INSCREVA-SE */
+
+.inscreva-se {
+  background-image: url("../imagens/inscreva-se.png");
+  display: flex;
+  height: 100vh;
+  background-size: cover; /* cobre toda a tela */
+  background-position: top center;
+  background-repeat: no-repeat;/* não repete */
+}
+
+.inscreva-se #espacamento {
+/* background-color: black; */
+width: 70%;
+}
+
+.inscreva-se button {
+  margin-top: 32px;
+  padding: 15.75px 22.5px;
+  color: var(--corBranca);
+  font-size: 3rem;
+  font-weight: bold;
+  background-color:#5984FF;
+  border: none;
+  box-shadow: 5px 5px 0px #295ce8;
+  max-width: 1080px;
+  border-radius: 15px;
+  transition: .5s;
+  cursor: pointer;
+}
+
+.inscreva-se button:hover {
+    background-color: #295ce8;
+    box-shadow: 5px 5px 0px #2D3ABA;
+}
+
+
 /* ESTILO DE: INSCRIÇÕES */
 
 #corrida-tag {
   text-align: center;
-  padding: 20px;
+  padding: 50px 0px 20px 0px;
   font-size: 2.5rem;
 }
 
@@ -290,13 +331,231 @@ header .menu-mobile {
     font-size: 1rem;
 }
 
+/* ESTILO DO: DIVISOR */
+
+.divisor {
+  margin: 50px auto;
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(
+        to right,
+        transparent,
+        rgba(0, 0, 0, 0.25),
+        transparent
+  );
+}
+
+/* ESTILO DO: EDIÇÃO ANTERIOR */
+
+.edicao-anterior {
+  padding: 80px;
+  margin-top: 80px;
+  text-align: center;
+  background-color: var(--corLaranja);
+}
+
+.edicao-anterior h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: var(--corBranca);
+}
+
+/* ---- CARROSSEL ---- */
+
+.carousel {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    overflow: hidden; 
+}
+
+.videos-container {
+    display: flex;
+    width: 100%;
+    transition: transform 0.5s ease;
+}
+
+.video {
+    min-width: 100%;
+    transition: transform 0.5s ease;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.video iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* ---- SETAS ---- */
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    color: var(--corBranca);
+    border: none;
+    padding: 15px 20px;
+    font-size: 2rem;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 10;
+    transition: 0.2s;
+}
+
+.carousel-btn:hover {
+    background: rgba(0,0,0,0.7);
+}
+
+.prev { left: -10px; }
+.next { right: -10px; }
+
+/* MOBILE */
+@media (max-width: 600px) {
+    .prev { left: 5px; }
+    .next { right: 5px; }
+}
+
+/* ESTILO DO: APRESENTAÇÃO */
+
+.apresentacao {
+  padding: 80px 8%;
+  display: flex;
+  gap: 100px;
+  justify-content: space-around;
+}
+
+.apresentacao .text-space {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 50%;
+}
+
+.apresentacao p {
+  text-align: justify;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-indent: 20px;
+  line-height: 1.5;
+}
+
+.apresentacao img {
+  max-width: 500px;
+}
+
+.apresentacao  a {
+  text-decoration: none;
+}
+
+.apresentacao a button {
+  padding: 10px 80px;
+  font-size: 25px;
+  font-weight: 600;
+  background-color: var(--corLaranja);
+  border: 0;
+  border-radius: 30px;
+  cursor: pointer;
+  color: var(--corBranca);
+
+}
+
+.apresentacao a button:hover {
+  box-shadow: 0px 0px 8px #E56C00;
+}
+
+/* ESTILO DO FOOTER */
+
+footer {
+  padding: 60px 4%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--corCinza-Escuro);
+  align-items: center;
+}
+
+footer .btn-redes {
+  padding: 30px;
+  display: flex;
+  gap: 20px;
+}
+
+footer .btn-redes button {
+  background-color: transparent;
+  border: 2px solid var(--corBranca);
+  border-radius: 8px;
+  color: var(--corBranca);
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: .5s;
+  width: 56px;
+  height: 56px;
+  font-size: 24px;
+  margin-right: 8px;
+}
+
+footer .btn-redes button:hover {
+    background-color: var(--corCinza-Claro);
+    color: var(--corLaranja);
+}
+
+footer img {
+  max-width: 80px;
+  border-radius: 50%;
+}
+
+footer p {
+  color: var(--corBranca);
+  text-align: center;
+}
 
 /* ==============================
    MEDIA QUERIES - RESPONSIVO
 =================================*/
 
-/* ===== Celulares pequenos (até 480px) ===== */
+/* ===== Celulares pequenos (até 440px) ===== */
 @media screen and (max-width: 480px) {
+
+    .inscreva-se {
+      background-image: url("../imagens/inscreva-se-resp.png");
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      background-size: cover; /* cobre toda a tela */
+      background-position: top center;
+      background-repeat: no-repeat;/* não repete */
+    }
+
+    .inscreva-se #espacamento {
+    /* background-color: black; */
+    height: 62%;
+    }
+
+    .inscreva-se .envelopamento {
+      display: flex;
+      justify-content: center;
+      background-color: #75E896;
+      margin-top: 32px;
+      width: 100%;
+    }
+
+    .inscreva-se button {
+      margin-top: 5px;
+      margin: 10px 2px 15.5px auto;
+      padding: 15.75px 22.5px;
+      color: var(--corBranca);
+      font-size: 2rem;
+      font-weight: bold;
+      background-color:#5984FF;
+    }
+
     #corrida-tag {
       font-size: 1.3rem;
     }
@@ -312,11 +571,179 @@ header .menu-mobile {
       text-align: justify;
       padding-bottom: 15px;
     }
+
+    /* ESTILO DO: EDIÇÃO ANTERIOR */
+
+.edicao-anterior {
+  padding: 80px 4%;
+}
+
+.edicao-anterior h2 {
+    font-size: 1.5rem;
+}
+
+/* ---- CARROSSEL ---- */
+
+.video {
+    aspect-ratio: 9 / 16;
+}
+
+/* ESTILO DO: APRESENTAÇÃO */
+
+.apresentacao {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.apresentacao .text-space {
+  max-width: 100%;
+  gap: 30px;
+}
+
+.apresentacao p {
+  font-size: 1rem;
+}
+
+}
+
+@media screen and (min-width: 400px) and (max-width: 741px) {
+
+  .inscreva-se #espacamento {
+    /* background-color: black; */
+    height: 50%;
+    }
+
+    .inscreva-se .envelopamento {
+      display: flex;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.76);
+      margin-top: 32px;
+      width: 100%;
+    }
+
+    .inscreva-se button {
+      margin-top: 5px;
+      margin: 10px 2px 15.5px auto;
+      padding: 12.75px 22.5px;
+      color: var(--corBranca);
+      font-size: 2rem;
+      font-weight: bold;
+      background-color:#5984FF;
+    }
+
+}
+
+/* ===== Celulares médios (441px a 480px) ===== */
+@media screen and (min-width: 441px) and (max-width: 480px) {
+
+    .inscreva-se #espacamento {
+    height: 62.7%;
+    }
+
+    .inscreva-se button {
+      margin-top: 5px;
+      margin: 10px 2px 15.5px auto;
+      padding: 15.75px 22.5px;
+      color: var(--corBranca);
+      font-size: 2.6rem;
+      font-weight: bold;
+      background-color:#5984FF;
+    }
+
+    #corrida-tag {
+      font-size: 1.3rem;
+    }
+    .inscricoes {
+      flex-direction: column-reverse;
+    }
+
+    .inscricoes .kit-more > img {
+      max-width: 0px;
+    }
     
+    .inscricoes .kit-more p {
+      text-align: justify;
+      padding-bottom: 15px;
+    }
+
+    /* ESTILO DO: EDIÇÃO ANTERIOR */
+
+.edicao-anterior {
+  padding: 80px 4%;
+}
+
+.edicao-anterior h2 {
+    font-size: 1.5rem;
+}
+
+/* ---- CARROSSEL ---- */
+
+.video {
+    aspect-ratio: 9 / 16;
+}
+
+/* ESTILO DO: APRESENTAÇÃO */
+
+.apresentacao {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.apresentacao .text-space {
+  max-width: 100%;
+  gap: 30px;
+}
+
+.apresentacao p {
+  font-size: 1rem;
+}
+
 }
 
 /* ===== Celulares médios (481px a 768px) ===== */
 @media screen and (min-width: 481px) and (max-width: 768px) {
+
+    /* ESTILO DE: INSCREVA-SE */
+
+
+.inscreva-se {
+      background-image: url("../imagens/inscreva-se-resp.png");
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 95.7vh;
+      background-size: cover; /* cobre toda a tela */
+      background-position: top center;
+      background-repeat: no-repeat;/* não repete */
+    }
+
+    .inscreva-se #espacamento {
+    /* background-color: black; */
+    height: 76.2%;
+    }
+
+    .inscreva-se .envelopamento {
+      display: flex;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.76);
+      margin-top: 32px;
+      width: 100%;
+    }
+
+    .inscreva-se button {
+      margin-top: 5px;
+      margin: 16px 2px 19.5px auto;
+      padding: 15.75px 22.5px;
+      color: var(--corBranca);
+      font-size: 3rem;
+      font-weight: bold;
+      background-color:#5984FF;
+    }
+
+/* INSCRIÇÕES */
+
     #corrida-tag {
       font-size: 1.5rem;
     }
@@ -332,9 +759,84 @@ header .menu-mobile {
       text-align: justify;
       padding-bottom: 15px;
     }
+
+    /* ESTILO DO: EDIÇÃO ANTERIOR */
+
+.edicao-anterior {
+  padding: 80px 10%;
 }
+
+.edicao-anterior h2 {
+    font-size: 1.5rem;
+}
+
+/* ---- CARROSSEL ---- */
+
+.video {
+    aspect-ratio: 9 / 16;
+}
+
+/* ESTILO DO: APRESENTAÇÃO */
+
+.apresentacao {
+  display: flex;
+  flex-direction: column;
+  
+  gap: 30px;
+}
+
+.apresentacao .text-space {
+  max-width: 100%;
+  gap: 30px;
+}
+
+.apresentacao p {
+  font-size: 1.5rem;
+}
+
+}
+
 /* ===== Tablets (769px a 1024px) ===== */
 @media screen and (min-width: 769px) and (max-width: 1024px) {
+
+    /* ESTILO DE: INSCREVA-SE */
+
+.inscreva-se {
+      background-image: url("../imagens/inscreva-se-resp.png");
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 95vh;
+      background-size: cover; /* cobre toda a tela */
+      background-position: top center;
+      background-repeat: no-repeat;/* não repete */
+    }
+
+    .inscreva-se #espacamento {
+    /* background-color: black; */
+    height: 73.2%;
+    }
+
+    .inscreva-se .envelopamento {
+      display: flex;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.76);
+      margin-top: 32px;
+      width: 100%;
+    }
+
+    .inscreva-se button {
+      margin-top: 5px;
+      margin: 16px 2px 19.5px auto;
+      padding: 15.75px 22.5px;
+      color: var(--corBranca);
+      font-size: 3rem;
+      font-weight: bold;
+      background-color:#5984FF;
+    }
+
+    /* INSCRIÇÕES */
+
     #corrida-tag {
       font-size: 1.7rem;
     }
@@ -350,5 +852,23 @@ header .menu-mobile {
       text-align: justify;
       padding-bottom: 15px;
     }
+
+        /* ESTILO DO: APRESENTAÇÃO */
+
+    .apresentacao {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .apresentacao .text-space {
+      max-width: 100%;
+      gap: 30px;
+    }
+
+    .apresentacao p {
+      font-size: 1rem;
+    }
+
 }
 

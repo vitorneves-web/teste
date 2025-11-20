@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/pagamento01.css">
+    <link rel="shortcut icon" href="imagens/favicon.ico" type="image/x-icon">
     <title>SNAC - Kit Simples</title>
 </head>
 <body>
@@ -29,6 +31,20 @@
             <button>Contato</button>
             </a>
         </div> <!--btn-contato-->
+
+        <div class="btn-menu-mobile" id="btn-menu-mobile">
+        <i class="bi bi-list"></i>
+      </div>
+
+      <nav class="menu-mobile" id="menu-mobile">
+        <i class="bi bi-x-lg"></i>
+        <ul>
+          <li><a href="#inscricoes">Inscrições</a></li>
+          <li><a href="#divisor">Sobre nós</a></li>
+          <li><a href="calendario.html">Caléndario 2025</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
 
         </section> <!--interface-->
     </header>
@@ -140,7 +156,7 @@
                     <!-- ✅ valores fixos para o backend -->
                     <input type="hidden" name="transactionAmount" value="55.00" />
                     <input type="hidden" name="description" value="Inscrição - Calebe" />
-                    <button type="submit">Gerar Pagamento</button>
+                    <button type="submit" id="btn-gerar">Gerar Pagamento</button>
                     </form>
                     </div>
                     </section>
@@ -339,6 +355,37 @@
             </div>
         </div>
 
+        <div id="pagamento-confirmado" style="display:none;">
+            <div class="msg-pagamento">
+                ✅ Pagamento confirmado com sucesso!  
+                <br><br>
+                <a href="/" class="btn-voltar">Voltar para o site</a>
+            </div>
+        </div>
+
+        <!-- SCRIPT PAGAMENTO CONFIRMADO -->
+        
+        <script>
+            const paymentId = sessionStorage.getItem("payment_id");
+            if (paymentId) {
+                verificarStatus();
+            }
+            function verificarStatus() {
+                fetch(`/status-pagamento?payment_id=${paymentId}`)
+                    .then(res => res.json())
+                    .then(dados => {
+                        if (dados.status === "approved") {
+                            document.getElementById("pagamento-confirmado").style.display = "block";
+                            return; // para de checar
+                        }
+                        // se não aprovado ainda, checa de novo depois
+                        setTimeout(verificarStatus, 3000);
+                    })
+                    .catch(() => setTimeout(verificarStatus, 3000));
+            }
+        </script>
+
+
 <!-- SECTION CARTÃO -->
 <section id="sec-cartao" style="display: none;">
     <h3>Pagamento com Cartão</h3>
@@ -421,5 +468,7 @@
   <!-- SDK Mercado Pago -->
   <script src="https://sdk.mercadopago.com/js/v2"></script>
   <script src="javascript/script.js"></script>
+  <script src="javascript/menu_mobile.js"></script>
+  <script src="javascript/scripts.js"></script>
 </body>
 </html>

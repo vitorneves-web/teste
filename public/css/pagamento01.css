@@ -49,7 +49,7 @@ header .logo img {
   border-radius: 50%;
 }
 
-header a {
+header .menu-desktop a {
   color: var(--corBranca);
   text-decoration: none;
   display: inline-block;
@@ -57,16 +57,16 @@ header a {
   font-family: var(--fonte-destaque);
 }
 
-header a:hover {
+header .menu-desktop a:hover {
   color: var(--corCinza-Claro);
   transform: scale(1.05);
 }
 
-header nav ul {
+header .menu-desktop ul {
   list-style-type: none;
 }
 
-header nav ul li {
+header .menu-desktop ul li {
   display: inline-block;
   padding: 0 40px;
 }
@@ -84,6 +84,79 @@ header .btn-contato button {
 
 header .btn-contato button:hover {
   box-shadow: 0px 0px 8px #E56C00;
+}
+
+/* Estilo do Menu Mobile */
+
+.btn-menu-mobile {
+    display: none;
+}
+
+.btn-menu-mobile i {
+    font-size: 2.8rem;
+    color: var(--corBranca);
+    cursor: pointer;
+}
+
+header .menu-mobile {
+    position: fixed;
+    top: 0;
+    left: 100%;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--corCinza-Escuro);
+    text-align: left;
+    padding: 32px 0;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.menu-mobile ul {
+    list-style: none;
+    padding: 64px 0;
+}
+
+.menu-mobile ul li a {
+    color: var(--corBranca);
+    font-size: 1.4rem;
+    text-decoration: none;
+    padding: 24px;
+    display: block;
+    transition: .5s;
+}
+
+.menu-mobile ul li a:hover {
+    background-color: var(--corCinzaClaro);
+    color: var(--corLaranja);
+}
+
+.menu-mobile .bi-x-lg {
+    font-size: 2rem;
+    color: var(--corBranca);
+    padding: 24px;
+    cursor: pointer;
+}
+
+.menu-mobile.abrir-menu {
+    left: 0;
+    pointer-events: initial;
+}
+
+@media (max-width: 1000px) {
+    .menu-desktop {
+        display: none;
+    }
+
+    .btn-contato {
+        display: none;
+    }
+
+}
+
+@media (max-width: 1000px) {
+    .btn-menu-mobile {
+        display: block;
+    }
 }
 
 /* ESTILO DO FORMULÁRIO */
@@ -468,6 +541,79 @@ section.pixBox h3 {
     margin-bottom: 10px;
 }
 
+/* MENSAGEM PAGAMENTO APROVADO */
+
+.pagamento-confirmado {
+    display: none;                 /* começa invisível */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.65);  /* fundo escurecido */
+    backdrop-filter: blur(3px);
+    z-index: 9999;                 /* fica acima de tudo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Caixa da mensagem */
+.pagamento-confirmado .msg-box {
+    background: #fff;
+    padding: 40px 50px;
+    border-radius: 18px;
+    text-align: center;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0px 8px 25px rgba(0,0,0,0.25);
+    animation: fadeInUp .4s ease;
+}
+
+/* Título */
+.pagamento-confirmado .msg-box h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #1a1a1a;
+}
+
+/* Texto */
+.pagamento-confirmado .msg-box p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+/* Botão */
+.pagamento-confirmado .btn-voltar {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #007bff;
+    color: #fff;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.pagamento-confirmado .btn-voltar:hover {
+    background: #005fcc;
+}
+
+/* animação da caixinha */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* =========================
    RESPONSIVIDADE
 ========================= */
@@ -476,9 +622,8 @@ section.pixBox h3 {
 @media (max-width: 480px) {
   
   header > .interface {
-    flex-direction: column;
-    gap: 15px;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
   }
 
   header nav ul li {
@@ -553,8 +698,7 @@ section.pixBox h3 {
 @media (min-width: 481px) and (max-width: 767px) {
 
   header > .interface {
-    flex-direction: column;
-    gap: 10px;
+    flex-direction: row;
     align-items: center;
   }
 
