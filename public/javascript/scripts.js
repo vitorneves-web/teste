@@ -25,7 +25,7 @@ document.getElementById("btn-gerar").addEventListener("click", function () {
 
     // espera 300ms antes de rolar (ajuste se precisar)
     setTimeout(() => {
-        document.getElementById("pixBox").scrollIntoView({
+        document.getElementById("divsor-pixbox").scrollIntoView({
             behavior: "smooth",
             block: "start"
         });
