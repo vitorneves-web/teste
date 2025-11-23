@@ -11,6 +11,37 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
+// NODE EMAILER
+
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
+async function enviarEmailConfirmacao(to, nome) {
+  const mailOptions = {
+    from: "Se Não Aguentar, Corra! <senaoaguentarcorra2023@gmail.com>",
+    to,
+    subject: "Pagamento confirmado!",
+    text: `
+Olá ${nome},
+
+Seu pagamento foi APROVADO! 🎉
+Sua inscrição está confirmada.
+
+Nos vemos na corrida!
+    `
+  };
+
+  await transporter.sendMail(mailOptions);
+}
+
+
 // ✅ URL do seu Web App do Google Apps Script
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyR6qlKPnhAlMn7Klwfts6GRhSUyRl8k7wWEhKrCM1fDjU04mtr_Tt-928BXhNZtMSbgA/exec";
 
@@ -149,6 +180,7 @@ app.post("/webhook", bodyParser.json(), async (req, res) => {
     const paymentInfo = await getPaymentDirect(paymentId);
     console.log("💰 Pagamento consultado:", paymentInfo.id, paymentInfo.status);
 
+    // 🔥 SE O PAGAMENTO FOR APROVADO
     if (["approved", "paid", "success"].includes(paymentInfo.status)) {
       console.log("✅ Pagamento aprovado:", paymentInfo.payer?.email);
 
@@ -164,8 +196,18 @@ app.post("/webhook", bodyParser.json(), async (req, res) => {
         status: "Aprovado",
       };
 
+      // 🔹 Atualiza a planilha
       await sendToSheet(data);
-    } else {
+
+      // 🔥 NOVO: Envia e-mail de confirmação
+      await enviarEmailConfirmacao(
+        paymentInfo.payer?.email,
+        paymentInfo.payer?.first_name
+      );
+
+      console.log("📧 E-mail de confirmação enviado!");
+    } 
+    else {
       console.log("ℹ️ Pagamento ainda não aprovado:", paymentInfo.status);
     }
 

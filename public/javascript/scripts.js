@@ -19,27 +19,5 @@ document.querySelector(".prev").addEventListener("click", () => {
     updateCarousel();
 });
 
-// SCRIPT PARA ROLAR ATÉ O QR Code
 
-document.addEventListener("DOMContentLoaded", function () {
-    const alvo = document.getElementById("divisor-pixbox");
-
-    // Observa mudanças no container onde o QR aparece
-    const observer = new MutationObserver(() => {
-        const qr = document.querySelector("#pixBox img");
-
-        // Se uma imagem (QR Code) apareceu → scroll!
-        if (qr) {
-            alvo.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-
-            observer.disconnect(); // parar de observar (opcional)
-        }
-    });
-
-    // Observa mudanças dentro da área onde o resultado do PIX é renderizado
-    observer.observe(document.getElementById("pixBox"), { childList: true, subtree: true });
-});
 
