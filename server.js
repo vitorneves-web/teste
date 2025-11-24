@@ -12,7 +12,6 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 
 // NODE EMAILER
-
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
@@ -23,6 +22,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+// Função de envio de e-mail
 async function enviarEmailConfirmacao(to, nome) {
   const mailOptions = {
     from: "Se Não Aguentar, Corra! <senaoaguentarcorra2023@gmail.com>",
@@ -41,16 +41,34 @@ Nos vemos na corrida!
   await transporter.sendMail(mailOptions);
 }
 
-
-// ✅ URL do seu Web App do Google Apps Script
+// URL do script
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyR6qlKPnhAlMn7Klwfts6GRhSUyRl8k7wWEhKrCM1fDjU04mtr_Tt-928BXhNZtMSbgA/exec";
 
-// ✅ Configuração do Mercado Pago
+// Função buscar dados da planilha pelo external_reference
+async function buscarDadosDaPlanilha(referenceId) {
+  try {
+    const url = `${GOOGLE_SCRIPT_URL}?external_reference=${referenceId}`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (!data || Object.keys(data).length === 0) {
+      console.log("⚠️ Nenhuma inscrição encontrada na planilha.");
+      return null;
+    }
+
+    return data;
+  } catch (err) {
+    console.error("❌ Erro ao buscar dados na planilha:", err);
+    return null;
+  }
+}
+
+// Mercado Pago config
 const ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESS_TOKEN;
 const client = new MercadoPagoConfig({ accessToken: ACCESS_TOKEN });
 const payment = new Payment(client);
 
-// 🔹 Função para tentar obter o pagamento diretamente na API REST
+// Buscar pagamento na API do MP
 async function getPaymentDirect(paymentId, retries = 6, delay = 4000) {
   for (let i = 0; i < retries; i++) {
     const resp = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
@@ -67,8 +85,7 @@ async function getPaymentDirect(paymentId, retries = 6, delay = 4000) {
     }
 
     if (!resp.ok) {
-      const errText = await resp.text();
-      throw new Error(`Erro na API do Mercado Pago: ${errText}`);
+      throw new Error(`Erro na API do Mercado Pago: ${await resp.text()}`);
     }
 
     return await resp.json();
@@ -77,7 +94,7 @@ async function getPaymentDirect(paymentId, retries = 6, delay = 4000) {
   throw new Error("Pagamento não encontrado após múltiplas tentativas.");
 }
 
-// 🔹 Função para enviar dados à planilha (com retry opcional)
+// Enviar para a planilha
 async function sendToSheet(data) {
   const retries = 3;
   const delay = 2000;
@@ -101,19 +118,18 @@ async function sendToSheet(data) {
   console.error("❌ Não foi possível enviar os dados após múltiplas tentativas.");
 }
 
-// ✅ Endpoint para criar pagamento PIX
+// Criar pagamento PIX
 app.post("/process_payment", async (req, res) => {
   try {
-    // 🔥 CRIA O referenceId AQUI
     const referenceId = crypto.randomUUID();
 
     const result = await payment.create({
       body: {
-        transaction_amount: Number(req.body.valor), // ← OK
+        transaction_amount: Number(req.body.valor),
         description: "Inscrição - Grupo de Corredores",
         payment_method_id: "pix",
 
-        external_reference: referenceId,   // ← AGORA FUNCIONA ✔️
+        external_reference: referenceId,
 
         payer: {
           email: req.body.email,
@@ -128,34 +144,25 @@ app.post("/process_payment", async (req, res) => {
       requestOptions: { idempotencyKey: crypto.randomUUID() },
     });
 
-    // Envia para a planilha
     const data = {
       status: "Aguardando pagamento",
-
       payerFirstName: req.body.payerFirstName,
       payerLastName: req.body.payerLastName,
       identificationType: req.body.identificationType,
       identificationNumber: req.body.identificationNumber,
       email: req.body.email,
-
       estado: req.body.estado,
       cidade: req.body.cidade,
-
       celular: req.body.celular,
       celular_emergencia: req.body.celular_emergencia,
-
       data_nascimento: req.body.data_nascimento,
-
       sexo: req.body.sexo,
       camisa: req.body.camisa,
       percurso: req.body.percurso,
-
       apelido: req.body.apelido,
       equipe: req.body.equipe,
-
       date: new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
-
-      external_reference: referenceId,  // ← ENVIA PARA A PLANILHA TAMBÉM
+      external_reference: referenceId,
       paymentId: result.id || ""
     };
 
@@ -168,8 +175,7 @@ app.post("/process_payment", async (req, res) => {
   }
 });
 
-
-// ✅ Webhook do Mercado Pago
+// Webhook MP
 app.post("/webhook", bodyParser.json(), async (req, res) => {
   try {
     console.log("📩 Webhook recebido:", JSON.stringify(req.body).slice(0, 500));
@@ -180,35 +186,41 @@ app.post("/webhook", bodyParser.json(), async (req, res) => {
     const paymentInfo = await getPaymentDirect(paymentId);
     console.log("💰 Pagamento consultado:", paymentInfo.id, paymentInfo.status);
 
-    // 🔥 SE O PAGAMENTO FOR APROVADO
     if (["approved", "paid", "success"].includes(paymentInfo.status)) {
-      console.log("✅ Pagamento aprovado:", paymentInfo.payer?.email);
 
+      const referenceId = paymentInfo.external_reference;
+
+      // Buscar dados reais da planilha
+      const dados = await buscarDadosDaPlanilha(referenceId);
+
+      if (!dados) {
+        console.log("⚠️ Não foi possível buscar dados na planilha. Cancelando envio de e-mail.");
+      } else {
+        const email = dados.email;
+        const nome = dados.payerFirstName || "Atleta";
+
+        if (email) {
+          await enviarEmailConfirmacao(email, nome);
+          console.log("📧 E-mail enviado para:", email);
+        } else {
+          console.log("⚠️ Nenhum e-mail encontrado para enviar.");
+        }
+      }
+
+      // Atualiza planilha
       const data = {
         payerFirstName: paymentInfo.payer?.first_name || "",
         payerLastName: paymentInfo.payer?.last_name || "",
-        email: paymentInfo.payer?.email || "",
+        email: dados?.email || "",
         identificationNumber: paymentInfo.payer?.identification?.number || "",
         transactionAmount: paymentInfo.transaction_amount || "",
         paymentId: paymentInfo.id || "",
-        external_reference: paymentInfo.external_reference || "",
+        external_reference: referenceId,
         date: new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
         status: "Aprovado",
       };
 
-      // 🔹 Atualiza a planilha
       await sendToSheet(data);
-
-      // 🔥 NOVO: Envia e-mail de confirmação
-      await enviarEmailConfirmacao(
-        paymentInfo.payer?.email,
-        paymentInfo.payer?.first_name
-      );
-
-      console.log("📧 E-mail de confirmação enviado!");
-    } 
-    else {
-      console.log("ℹ️ Pagamento ainda não aprovado:", paymentInfo.status);
     }
 
     res.status(200).send("OK");
@@ -218,19 +230,18 @@ app.post("/webhook", bodyParser.json(), async (req, res) => {
   }
 });
 
-// Mensagem pós pagamento:
-
+// Status pagamento
 app.get("/status-pagamento", async (req, res) => {
-    const id = req.query.payment_id;
+  const id = req.query.payment_id;
 
-    try {
-        const status = await getStatusFromSheet(id); // você já tem isso implementado
-        res.json({ status });
-    } catch (e) {
-        res.json({ status: "não encontrado" });
-    }
+  try {
+    const status = await getStatusFromSheet(id);
+    res.json({ status });
+  } catch (e) {
+    res.json({ status: "não encontrado" });
+  }
 });
 
-// Porta dinâmica
+// Porta
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
